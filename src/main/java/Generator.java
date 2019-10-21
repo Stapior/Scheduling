@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -23,7 +24,16 @@ public class Generator {
         }
     }
 
-    private int schedule
+    private int schedule(List<Task> tasks) {
+        tasks.sort(Comparator.comparingInt(Task::getStartTime));
+        List<Task> m1 = new ArrayList<>();
+        List<Task> m2 = new ArrayList<>();
+        List<Task> m3 = new ArrayList<>();
+        List<Task> m4 = new ArrayList<>();
+        return 0;
+    }
+
+
 
     private List<Task> generateTasks(int n) {
         log.info("Generowanie instancji {} zadań", n);
