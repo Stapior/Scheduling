@@ -1,11 +1,9 @@
 import lombok.extern.slf4j.Slf4j;
 import model.Task;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -17,22 +15,26 @@ public class Generator {
         for (int n = 50; n <= 500; n += 50) {
             List<Task> tasks = generator.generateTasks(n);
             try {
-                generator.saveTasks(tasks);
+                FileUtil.saveTasks(tasks);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        generator.readInstances();
     }
 
-    private int schedule(List<Task> tasks) {
-        tasks.sort(Comparator.comparingInt(Task::getStartTime));
-        List<Task> m1 = new ArrayList<>();
-        List<Task> m2 = new ArrayList<>();
-        List<Task> m3 = new ArrayList<>();
-        List<Task> m4 = new ArrayList<>();
-        return 0;
+    private void readInstances() {
+        File instances = new File("instances");
+        for (String filename : instances.list()) {
+            List<Task> result = null;
+            try {
+                result = FileUtil.readInstance("instances/" + filename);
+            } catch (Exception e) {
+                log.error("Cannot read file {}", filename);
+            }
+            log.info("Readed file: {}", result);
+        }
     }
-
 
 
     private List<Task> generateTasks(int n) {
@@ -41,6 +43,7 @@ public class Generator {
         for (int i = 0; i < n; i++) {
             Task task = new Task();
             task.setDuration(getRandomTime());
+            task.setId(i + 1);
             result.add(task);
         }
         int avg = (int) Math.abs(result.stream().mapToInt(Task::getDuration).average().getAsDouble());
@@ -60,14 +63,6 @@ public class Generator {
         return result;
     }
 
-    private void saveTasks(List<Task> tasks) throws IOException {
-        int n = tasks.size();
-        PrintWriter writer = new PrintWriter(String.format("instances/instances_%d.txt", n), StandardCharsets.UTF_8.toString());
-        writer.println(n);
-        tasks.forEach(task -> writer.println(task.toFileFormat()));
-        writer.close();
-        log.info("Wygenerowano plik instances_{}.txt", n);
-    }
 
     private int getRandomTime() {
         return getRandom(1, 20);

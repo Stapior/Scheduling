@@ -18,4 +18,25 @@ public class Machine {
     public long getTaskCompletionTime() {
         return scheduledTasks.stream().max(Comparator.comparingLong(ScheduledTask::getCompletionTime)).orElse(new ScheduledTask()).getCompletionTime();
     }
+
+    public void addTask(Task task) {
+        scheduledTasks.add(new ScheduledTask(task, Math.min(task.getStartTime(), getTaskCompletionTime())));
+    }
+
+    public long getDelay() {
+        long result = 0;
+        for (ScheduledTask task : scheduledTasks) {
+            result += task.getDelay();
+        }
+        return result;
+    }
+
+    public String getTasksSave() {
+        StringBuilder resultBuilder = new StringBuilder();
+        scheduledTasks.forEach((task -> {
+            resultBuilder.append(task.getTask().getId());
+            resultBuilder.append(" ");
+        }));
+        return resultBuilder.toString();
+    }
 }
