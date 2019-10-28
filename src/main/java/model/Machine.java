@@ -2,25 +2,28 @@ package model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class Machine {
     @NonNull
     List<ScheduledTask> scheduledTasks;
 
-    public long getTaskCompletionTime() {
-        return scheduledTasks.stream().max(Comparator.comparingLong(ScheduledTask::getCompletionTime)).orElse(new ScheduledTask()).getCompletionTime();
+    public Machine() {
+        this.scheduledTasks = new LinkedList<>();
     }
 
-    public void addTask(Task task) {
-        scheduledTasks.add(new ScheduledTask(task, Math.min(task.getStartTime(), getTaskCompletionTime())));
+    public long getTaskCompletionTime() {
+        if (Objects.isNull(scheduledTasks)) {
+            return 0;
+        }
+        return scheduledTasks.stream().max(Comparator.comparingLong(ScheduledTask::getCompletionTime)).orElse(new ScheduledTask()).getCompletionTime();
     }
 
     public long getDelay() {
@@ -38,5 +41,9 @@ public class Machine {
             resultBuilder.append(" ");
         }));
         return resultBuilder.toString();
+    }
+
+    public void addTask(Task task) {
+        scheduledTasks.add(new ScheduledTask(task, Math.max(task.getStartTime(), getTaskCompletionTime())));
     }
 }

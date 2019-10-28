@@ -29,8 +29,24 @@ public class Problem {
     public long getDelay() {
         long result = 0;
         for (Machine machine : machines) {
-            result = +machine.getDelay();
+            result += machine.getDelay();
         }
         return result;
+    }
+
+    public boolean isProblemResolved() {
+        for (Task task : tasks) {
+            int count = 0;
+            for (Machine machine : machines) {
+                if (machine.getScheduledTasks().stream().anyMatch(scheduledTask -> scheduledTask.getTask().getId() == task.getId())) {
+                    count++;
+                }
+            }
+
+            if (count != 1) {
+                return false;
+            }
+        }
+        return true;
     }
 }

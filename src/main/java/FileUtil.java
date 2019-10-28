@@ -38,7 +38,6 @@ public class FileUtil {
     }
 
     public static Solution readSolution(String solutionFileName, String instanceFileName) {
-        List<Machine> machines = new ArrayList<>();
         Solution solution = new Solution();
         Problem problem = new Problem();
         try {
@@ -63,6 +62,7 @@ public class FileUtil {
             for (String id : ids) {
                 machine.addTask(problem.getTask(Integer.parseInt(id)));
             }
+            i++;
         }
         return solution;
     }

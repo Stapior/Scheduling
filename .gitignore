@@ -69,3 +69,4 @@ fabric.properties
 
 #own directories
 /instances/
+/results/

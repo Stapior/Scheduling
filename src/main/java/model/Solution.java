@@ -17,4 +17,12 @@ public class Solution {
     public boolean checkDelay() {
         return delay == problem.getDelay();
     }
+
+    public boolean isProblemResolved() {
+        return problem.isProblemResolved();
+    }
+
+    public boolean verifySolution() {
+        return checkDelay() && isProblemResolved();
+    }
 }
