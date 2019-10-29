@@ -1,5 +1,8 @@
+package app;
+
 import lombok.extern.slf4j.Slf4j;
 import model.Solution;
+import utils.FileUtil;
 
 import java.io.File;
 import java.util.Objects;
