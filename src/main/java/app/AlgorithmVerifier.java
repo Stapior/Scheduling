@@ -26,7 +26,7 @@ public class AlgorithmVerifier {
         long start;
         long stop;
         for (String filename : Objects.requireNonNull(instances.list())) {
-            List<Task> result = null;
+            List<Task> result;
             try {
                 result = FileUtil.readInstance("instances/" + filename);
                 Problem problem = new Problem();
@@ -35,7 +35,7 @@ public class AlgorithmVerifier {
                 ResolverFactory.getResolver(resolverName).resolveProblem(problem);
                 stop = System.currentTimeMillis();
                 log.info("Dla pilku {} wynik {} w czasie {}", filename, problem.getDelay(), stop-start);
-                FileUtil.saveSolution(problem);
+                FileUtil.saveSolution(problem, filename.substring(2, 8));
             } catch (Exception e) {
                 log.error("Cannot read file ", e);
             }

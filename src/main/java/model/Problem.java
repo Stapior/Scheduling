@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Data
@@ -49,4 +50,10 @@ public class Problem {
         }
         return true;
     }
+
+    public Machine getLessLoadedMachine(){
+        return machines.stream().min(Comparator.comparingLong(Machine::getTaskCompletionTime)).orElse(null);
+    }
+
+
 }

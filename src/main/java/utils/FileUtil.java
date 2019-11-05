@@ -29,14 +29,15 @@ public class FileUtil {
         log.info("Wygenerowano plik in132319_{}.txt", n);
     }
 
-    public static void saveSolution(Problem problem) throws FileNotFoundException, UnsupportedEncodingException {
+    public static void saveSolution(Problem problem, String index) throws FileNotFoundException, UnsupportedEncodingException {
         long delay = problem.getDelay();
         int n = problem.getTasks().size();
-        PrintWriter writer = new PrintWriter(String.format("results/out132319_%d.txt", n), StandardCharsets.UTF_8.toString());
+        String filename = String.format("results/out%s_%d.txt", index, n);
+        PrintWriter writer = new PrintWriter(filename, StandardCharsets.UTF_8.toString());
         writer.println(delay);
         problem.getMachines().forEach(machine -> writer.println(machine.getTasksSave()));
         writer.close();
-        log.info("Saved result in file out132319_{}.txt", n);
+        log.info("Saved result in file {} ", filename);
     }
 
     public static Solution readSolution(String solutionFileName, String instanceFileName) {
@@ -54,19 +55,24 @@ public class FileUtil {
         } catch (IOException e) {
             log.error("Cannot read file: ", e);
         }
-        int delay = Integer.parseInt(lines.get(0));
-        lines.remove(0);
-        solution.setDelay(delay);
-        int i = 0;
-        for (String line : lines) {
-            Machine machine = problem.getMachines().get(i);
-            String[] ids = line.split(" ");
-            for (String id : ids) {
-                machine.addTask(problem.getTask(Integer.parseInt(id)));
+        try {
+            int delay = Integer.parseInt(lines.get(0));
+            lines.remove(0);
+            solution.setDelay(delay);
+            int i = 0;
+            for (String line : lines) {
+                Machine machine = problem.getMachines().get(i);
+                String[] ids = line.split(" ");
+                for (String id : ids) {
+                    machine.addTask(problem.getTask(Integer.parseInt(id)));
+                }
+                i++;
             }
-            i++;
+            return solution;
+        }catch (Exception e){
+         log.error("Nie można wczytać pliku, nieprawidłowa instancja");
+         return null;
         }
-        return solution;
     }
 
     public static List<Task> readInstance(String fileName) throws Exception {

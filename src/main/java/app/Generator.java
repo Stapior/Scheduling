@@ -37,7 +37,7 @@ public class Generator {
             task.setId(i + 1);
             result.add(task);
         }
-        int avg = (int) Math.abs(result.stream().mapToInt(Task::getDuration).average().getAsDouble());
+        int avg = (int) Math.abs(result.stream().mapToInt(Task::getDuration).average().orElse(0));
         int sum = result.stream().mapToInt(Task::getDuration).sum();
         int maxStartTime = (sum / 4) - ((n / 50)) * avg;
         if (maxStartTime < 0) {
