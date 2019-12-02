@@ -37,7 +37,7 @@ public class FileUtil {
         writer.println(delay);
         problem.getMachines().forEach(machine -> writer.println(machine.getTasksSave()));
         writer.close();
-        log.info("Saved result in file {} ", filename);
+//        log.info("Saved result in file {} ", filename);
     }
 
     public static Solution readSolution(String solutionFileName, String instanceFileName) {
@@ -46,7 +46,7 @@ public class FileUtil {
         try {
             problem.setTasks(FileUtil.readInstance(instanceFileName));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error while reading", e);
         }
         solution.setProblem(problem);
         List<String> lines = Collections.emptyList();
@@ -69,9 +69,9 @@ public class FileUtil {
                 i++;
             }
             return solution;
-        }catch (Exception e){
-         log.error("Nie można wczytać pliku, nieprawidłowa instancja");
-         return null;
+        } catch (Exception e) {
+            log.error("Nie można wczytać pliku, nieprawidłowa instancja");
+            return null;
         }
     }
 
@@ -86,7 +86,7 @@ public class FileUtil {
         int n = Integer.parseInt(lines.get(0));
 
         lines.remove(0);
-        lines.forEach((line) -> {
+        lines.forEach(line -> {
             String[] params = line.split(" ");
             if (params.length == 3) {
                 int currentId = tasks.size() + 1;
