@@ -10,9 +10,14 @@ class Stats {
     String index;
     int size;
     long result;
+    long time;
 
     @Override
     public String toString() {
         return index + " " + String.format("%03d", size) + " " + result;
+    }
+
+    public String toResult() {
+        return index + " " + String.format("%08d", time) + " " + result;
     }
 }

@@ -78,6 +78,7 @@ public class FileUtil {
     public static List<Task> readInstance(String fileName) throws Exception {
         List<Task> tasks = new ArrayList<>();
         List<String> lines = Collections.emptyList();
+        System.out.println(fileName);
         try {
             lines = Files.readAllLines(Paths.get(fileName), StandardCharsets.UTF_8);
         } catch (IOException e) {
