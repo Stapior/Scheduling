@@ -7,6 +7,9 @@ public class ResolverFactory {
             case "SIMPLE":
                 problemResolver = new SimpleResolver();
                 break;
+            case "GENETIC":
+                problemResolver = new GeneticResolver();
+                break;
             default:
                 problemResolver = new NaiveResolver();
         }

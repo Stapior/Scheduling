@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class AlgorithmVerifier {
     public static void main(String[] args) {
         log.info("WERYFIKACJA ALGORYTMU");
-        String resolverName = "simple";
+        String resolverName = "genetic";
         if (args.length > 0) {
             resolverName = args[0];
         }

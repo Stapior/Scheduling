@@ -20,10 +20,10 @@ public class Machine {
     }
 
     public long getTaskCompletionTime() {
-        if (Objects.isNull(scheduledTasks)) {
+        if (Objects.isNull(scheduledTasks) || scheduledTasks.isEmpty()) {
             return 0;
         }
-        return scheduledTasks.stream().max(Comparator.comparingLong(ScheduledTask::getCompletionTime)).orElse(new ScheduledTask()).getCompletionTime();
+        return scheduledTasks.get(0).getCompletionTime();
     }
 
     public long getDelay() {
@@ -44,6 +44,6 @@ public class Machine {
     }
 
     public void addTask(Task task) {
-        scheduledTasks.add(new ScheduledTask(task, Math.max(task.getStartTime(), getTaskCompletionTime())));
+        scheduledTasks.add(0,new ScheduledTask(task, Math.max(task.getStartTime(), getTaskCompletionTime())));
     }
 }
