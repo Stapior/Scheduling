@@ -1,16 +1,17 @@
+
 package app;
 
-import lombok.extern.slf4j.Slf4j;
-import model.Solution;
-import model.Stats;
-import utils.FileUtil;
+        import lombok.extern.slf4j.Slf4j;
+        import model.Solution;
+        import model.Stats;
+        import utils.FileUtil;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+        import java.io.File;
+        import java.util.ArrayList;
+        import java.util.Comparator;
+        import java.util.List;
+        import java.util.Objects;
+        import java.util.stream.Collectors;
 
 @Slf4j
 public class SolutionVerifier {

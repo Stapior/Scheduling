@@ -4,18 +4,15 @@ import model.Machine;
 import model.Problem;
 import model.Task;
 
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-class SimpleResolver implements ProblemResolver {
+class GeneticResolver implements ProblemResolver {
 
     @Override
     public Problem resolveProblem(Problem problem) {
         List<Task> tasks = new ArrayList<>(problem.getTasks());
-        List<Problem> population = new ArrayList<>();
-
         double maxDuration = tasks.stream().max(Comparator.comparingLong(Task::getDuration)).orElse(new Task()).getDuration();
 
         while (!tasks.isEmpty()) {

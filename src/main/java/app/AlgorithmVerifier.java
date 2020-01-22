@@ -30,16 +30,14 @@ public class AlgorithmVerifier {
         int turns = 10;
         long start;
         long stop;
-        long sum=0;
-        int n=0;
-        List<String> files  = Arrays.asList(instances.list());
+        long sum = 0;
+        int n = 0;
+        List<String> files = Arrays.asList(instances.list());
         files.sort(String::compareTo);
         List<Stats> results = new ArrayList<>();
         for (String filename : files) {
             List<Task> result;
-            132225 132214 132219 132195 125342 132209 132207 132221 127173 132349 132348 132197 132319 132215 127329
-            132280 126151 132192
-            {
+            try {
                 result = FileUtil.readInstance("instances/" + filename);
                 Problem problem = new Problem();
                 problem.setTasks(result);
@@ -49,24 +47,26 @@ public class AlgorithmVerifier {
                     ResolverFactory.getResolver(resolverName).resolveProblem(problem);
                 }
                 stop = System.nanoTime();
-                log.info("Dla pilku {} wynik {} w czasie {}", filename, problem.getDelay(), (stop-start)/(1000*turns));
+                log.info("Dla pilku {} wynik {} w czasie {}", filename, problem.getDelay(), (stop - start) / (1000 * turns));
                 results.add(Stats.builder().index(filename.substring(2, 8)).result(problem.getDelay()).size(problem.getTasks().size()).time((stop - start) / (1000 * turns)).build());
                 sum += problem.getDelay();
-                n+=1;
+                n += 1;
                 FileUtil.saveSolution(problem, filename.substring(2, 8));
             } catch (Exception e) {
                 log.error("Cannot read file ", e);
             }
         }
         List<String> indexes = results.stream().map(Stats::getIndex).distinct().collect(Collectors.toList());
-        String a[] = {132225 132214 132219 132195 125342 132209 132207 132221 127173 132349 132348 132197 132319 132215 127329 132280 126151 132192}
-        for (String index : indexes) {
+//        Integer[] a = {132225, 132214, 132219, 132195, 125342, 132209, 132207, 132221, 127173, 132349, 132348, 132197, 132319, 132215, 127329, 132280, 126151, 132192};
+        Integer[] a = {132319};
+        List<String> indexesInOrder = new ArrayList<Integer>(Arrays.asList(a)).stream().map(String::valueOf).collect(Collectors.toList());
+        for (String index : indexesInOrder) {
             List<Stats> st = results.stream().filter(stats -> stats.getIndex().equals(index)).collect(Collectors.toList());
             st.sort(Comparator.comparingLong(Stats::getSize));
             st.forEach(stats -> System.out.println(stats.toResult()));
 
         }
         log.info("#########################");
-        log.info("srednia:{}", sum/n);
+        log.info("srednia:{}", sum / n);
     }
 }

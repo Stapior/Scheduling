@@ -18,6 +18,6 @@ class Stats {
     }
 
     public String toResult() {
-        return index + " " + String.format("%08d", time) + " " + result;
+        return String.format("%03d", size) +  " " +index + " " + String.format("%08d", time) + " " + result;
     }
 }
