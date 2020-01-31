@@ -70,3 +70,8 @@ fabric.properties
 #own directories
 /instances/
 /results/
+/.idea/
+/myresults/
+/.idea/
+/instances/
+/instances3/

@@ -1,37 +1,48 @@
 package resolvers;
 
+import model.Machine;
 import model.Problem;
 import model.SimpleSolution;
 import model.Task;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 class GeneticResolver implements ProblemResolver {
-    int mutations = 200;
-    int populationSize = 30;
+    int mutations = 40;
+    int populationSize = 15;
     Random random = new Random();
-    int mutationRatio = 30;
+    int mutationRatio = 60;
+
 
     @Override
     public Problem resolveProblem(Problem problem) {
-        List<Task> tasks = new ArrayList<>(problem.getTasks());
         List<SimpleSolution> startPopulation = new ArrayList<>();
         List<SimpleSolution> population = new ArrayList<>();
-        startPopulation.add(SimpleSolution.builder().tasks(tasks.stream().
-                sorted(Comparator.comparingDouble(task -> task.getEndTime()))
-                .collect(Collectors.toList())).build());
 
-        for (int i = 0; i < populationSize -1 ; i++) {
-            double c = random.nextInt(100);
-            Collections.shuffle(tasks);
-            startPopulation.add(SimpleSolution.builder().tasks(new ArrayList<>(tasks)).build());
+
+        for (int i = 0; i < populationSize - 1; i++) {
+            double c = random.nextInt(10) + 90.0;
+            List<Task> tasks = new ArrayList<>(problem.getTasks());
+            double maxDuration = tasks.stream().max(Comparator.comparingLong(Task::getDuration)).orElse(new Task()).getDuration();
+            Problem p =  new Problem();
+            List<Task> newTasks = new ArrayList<>();
+            while (!tasks.isEmpty()) {
+                Machine machine = p.getLessLoadedMachine();
+                long endTime = machine.getTaskCompletionTime();
+                Task task = tasks.stream().min(Comparator.comparingDouble(t -> Math.max(t.getStartTime() - endTime, 0) * (10*(c/100)) + t.getDuration() / maxDuration)).orElse(null);
+                machine.addTask(task);
+                newTasks.add(task);
+                tasks.remove(task);
+            }
+            startPopulation.add(SimpleSolution.builder().tasks(newTasks).build());
 
         }
 
-        for (int i = 0; i < 400; i++) {
+        for (int i = 0; i < 2000; i++) {
             population = new ArrayList<>(startPopulation);
 
             for (int j = 0; j < mutations; j++) {
@@ -48,13 +59,14 @@ class GeneticResolver implements ProblemResolver {
             SimpleSolution best = population.stream().min(Comparator.comparingLong(SimpleSolution::getDelay)).get();
             population.remove(best);
             population.sort(Comparator.comparingLong(SimpleSolution::getDelay));
-            startPopulation = new ArrayList<>( population.subList(0, populationSize - 1));
+            startPopulation = new ArrayList<>(population.subList(0, populationSize - 1));
             startPopulation.add(best);
         }
 
         SimpleSolution best = population.stream().min(Comparator.comparingLong(SimpleSolution::getDelay)).get();
         Problem res = new Problem();
-        for (Task task : best.getTasks()) {
+        for (
+                Task task : best.getTasks()) {
             problem.getLessLoadedMachine().addTask(task);
         }
         return res;
@@ -66,7 +78,7 @@ class GeneticResolver implements ProblemResolver {
 
     private SimpleSolution crossing(SimpleSolution solution, SimpleSolution secondSolution) {
         List<Task> newOrder = new ArrayList<>(solution.getTasks());
-        int len = random.nextInt(20);
+        int len = random.nextInt(solution.getTasks().size()/2);
         int start = random.nextInt(newOrder.size() - len);
         for (int i = start; i < start + len; i++) {
             Task task = secondSolution.getTasks().get(i);
@@ -92,6 +104,5 @@ class GeneticResolver implements ProblemResolver {
     private void computeDelays(List<SimpleSolution> population) {
         population.stream().parallel().forEach(SimpleSolution::countDelay);
     }
-
 
 }

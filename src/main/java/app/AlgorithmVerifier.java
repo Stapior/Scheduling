@@ -27,7 +27,7 @@ public class AlgorithmVerifier {
 
     private static void readInstances(String resolverName) {
         File instances = new File("instances");
-        int turns = 10;
+        int turns = 1;
         long start;
         long stop;
         long sum = 0;
