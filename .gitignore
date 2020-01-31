@@ -68,10 +68,10 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 #own directories
-/instances/
+/instances2/
 /results/
 /.idea/
 /myresults/
 /.idea/
+/instances2/
 /instances/
-/instances3/

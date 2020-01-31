@@ -65,10 +65,12 @@ class GeneticResolver implements ProblemResolver {
 
         SimpleSolution best = population.stream().min(Comparator.comparingLong(SimpleSolution::getDelay)).get();
         Problem res = new Problem();
-        for (
-                Task task : best.getTasks()) {
-            problem.getLessLoadedMachine().addTask(task);
+        res.setTasks(problem.getTasks());
+        for (Task task : best.getTasks()) {
+            res.getLessLoadedMachine().addTask(task);
         }
+        System.out.println(best.getDelay());
+        System.out.println(res.getDelay());
         return res;
     }
 

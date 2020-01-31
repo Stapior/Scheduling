@@ -15,6 +15,7 @@ public class Solution {
     private long delay;
 
     public boolean checkDelay() {
+        long d = problem.getDelay();
         return delay == problem.getDelay();
     }
 

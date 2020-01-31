@@ -44,7 +44,7 @@ public class AlgorithmVerifier {
                 start = System.nanoTime();
                 for (int i = 0; i < turns; i++) {
                     problem.getMachines().forEach(machine -> machine.getScheduledTasks().clear());
-                    ResolverFactory.getResolver(resolverName).resolveProblem(problem);
+                    problem = ResolverFactory.getResolver(resolverName).resolveProblem(problem);
                 }
                 stop = System.nanoTime();
                 log.info("Dla pilku {} wynik {} w czasie {}", filename, problem.getDelay(), (stop - start) / (1000 * turns));
@@ -57,8 +57,8 @@ public class AlgorithmVerifier {
             }
         }
         List<String> indexes = results.stream().map(Stats::getIndex).distinct().collect(Collectors.toList());
-//        Integer[] a = {132225, 132214, 132219, 132195, 125342, 132209, 132207, 132221, 127173, 132349, 132348, 132197, 132319, 132215, 127329, 132280, 126151, 132192};
-        Integer[] a = {132319};
+        Integer[] a = {132225, 132214, 132219, 132195, 125342, 132209, 132207, 132221, 127173, 132349, 132348, 132197, 132319, 132215, 127329, 132280, 126151, 132192};
+//        Integer[] a = {132319};
         List<String> indexesInOrder = new ArrayList<Integer>(Arrays.asList(a)).stream().map(String::valueOf).collect(Collectors.toList());
         for (String index : indexesInOrder) {
             List<Stats> st = results.stream().filter(stats -> stats.getIndex().equals(index)).collect(Collectors.toList());
