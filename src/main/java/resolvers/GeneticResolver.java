@@ -12,8 +12,8 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 class GeneticResolver implements ProblemResolver {
-    int mutations = 40;
-    int populationSize = 15;
+    int mutations = 16;
+    int populationSize = 8;
     Random random = new Random();
     int mutationRatio = 60;
 
@@ -25,7 +25,7 @@ class GeneticResolver implements ProblemResolver {
 
 
         for (int i = 0; i < populationSize - 1; i++) {
-            double c = random.nextInt(10) + 90.0;
+            double c = random.nextInt(40) + 60.0;
             List<Task> tasks = new ArrayList<>(problem.getTasks());
             double maxDuration = tasks.stream().max(Comparator.comparingLong(Task::getDuration)).orElse(new Task()).getDuration();
             Problem p =  new Problem();
@@ -42,7 +42,7 @@ class GeneticResolver implements ProblemResolver {
 
         }
 
-        for (int i = 0; i < 2000; i++) {
+        for (int i = 0; i < 8000; i++) {
             population = new ArrayList<>(startPopulation);
 
             for (int j = 0; j < mutations; j++) {
@@ -80,7 +80,7 @@ class GeneticResolver implements ProblemResolver {
 
     private SimpleSolution crossing(SimpleSolution solution, SimpleSolution secondSolution) {
         List<Task> newOrder = new ArrayList<>(solution.getTasks());
-        int len = random.nextInt(solution.getTasks().size()/2);
+        int len = random.nextInt(solution.getTasks().size()/5);
         int start = random.nextInt(newOrder.size() - len);
         for (int i = start; i < start + len; i++) {
             Task task = secondSolution.getTasks().get(i);

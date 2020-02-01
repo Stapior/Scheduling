@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -36,6 +33,7 @@ public class Machine {
 
     public String getTasksSave() {
         StringBuilder resultBuilder = new StringBuilder();
+        Collections.reverse(scheduledTasks);
         scheduledTasks.forEach((task -> {
             resultBuilder.append(task.getTask().getId());
             resultBuilder.append(" ");
